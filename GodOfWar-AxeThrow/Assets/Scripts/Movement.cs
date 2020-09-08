@@ -29,7 +29,7 @@ public class Movement : MonoBehaviour
         cam = Camera.main;
         controller = this.GetComponent<CharacterController>();
     }
-
+    
     void Update()
     {
         InputMagnitude();
