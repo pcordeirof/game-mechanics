@@ -46,7 +46,7 @@ public class Movement : MonoBehaviour
         if (Speed > allowPlayerRotation)
         {
             PlayerMove(); // ver sobre como faazer isso sme o if
-            RotateToCamera(transform);
+            //RotateToCamera(transform);
         }
     }
     public void RotateToCamera(Transform t)
@@ -79,7 +79,7 @@ public class Movement : MonoBehaviour
 
            
         controller.Move(desiredMoveDirection * Time.deltaTime * 3);
-
+        
     }
 
     void AnimatePlayer()
