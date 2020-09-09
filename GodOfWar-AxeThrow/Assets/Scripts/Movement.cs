@@ -14,6 +14,11 @@ public class Movement : MonoBehaviour
     public Animator anim;
     public Camera cam;
     public CharacterController controller;
+
+    public bool aiming = false;
+
+    public Vector2 OnMovementInput {get; set;} //não sei o que é isso hahaha
+    public Vector3 OnMovementDirectionInput {get; set;}
     
     [Header("Animation Smoothing")]
     [Range(0, 1f)]
@@ -26,17 +31,23 @@ public class Movement : MonoBehaviour
     void Start()
     {
         anim = this.GetComponent<Animator>();
-        cam = Camera.main;
         controller = this.GetComponent<CharacterController>();
     }
     
     void Update()
     {
-        InputMagnitude();
-        AnimatePlayer();
+        GetMovementInput();
+        GetMovementDirection();
+        Rotate();
+        if(!aiming)
+        {
+            PlayerMovement();
+            AnimatePlayer();
+        }
+        //InputMagnitude();
     }
 
-    void InputMagnitude()
+    /*void InputMagnitude()
     {
         InputX = Input.GetAxis("Horizontal");
         InputY = Input.GetAxis("Vertical");
@@ -45,11 +56,11 @@ public class Movement : MonoBehaviour
 
         if (Speed > allowPlayerRotation)
         {
-            PlayerMove(); // ver sobre como faazer isso sme o if
+            //PlayerMove(); // ver sobre como faazer isso sme o if
             //RotateToCamera(transform);
         }
-    }
-    public void RotateToCamera(Transform t)
+    }*/
+    /*public void RotateToCamera(Transform t)
     {
 
         var camera = Camera.main;
@@ -59,9 +70,9 @@ public class Movement : MonoBehaviour
         desiredMoveDirection = forward;
 
         t.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
-    }
+    }*/
 
-    void PlayerMove()
+    /*void PlayerMove()
     {
         InputX = Input.GetAxis("Horizontal");
         InputY = Input.GetAxis("Vertical");
@@ -80,11 +91,13 @@ public class Movement : MonoBehaviour
            
         controller.Move(desiredMoveDirection * Time.deltaTime * 3);
         
-    }
+    }*/
 
     void AnimatePlayer()
     {
-        if(Speed> 0.1f)
+        Speed = new Vector2(InputX, InputY).sqrMagnitude;
+
+        if(Speed> 0f)
         {
             anim.SetBool("Walking", true);
             anim.SetFloat("InputY", InputY, VerticalAnimTime, Time.deltaTime * 2f);
@@ -95,5 +108,35 @@ public class Movement : MonoBehaviour
         {
             anim.SetBool("Walking", false);
         }
+    }
+
+    void GetMovementInput()
+    {
+        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        OnMovementInput = input;
+    }
+
+    void GetMovementDirection()
+    {
+        var cameraForwardDirection = Camera.main.transform.forward;
+        Debug.DrawRay(Camera.main.transform.position, cameraForwardDirection * 10, Color.red);
+        var directionToMoveIn = Vector3.Scale(cameraForwardDirection, (Vector3.right + Vector3.forward));
+        Debug.DrawRay(Camera.main.transform.position, directionToMoveIn * 10, Color.blue);
+        OnMovementDirectionInput = directionToMoveIn.normalized;
+    }
+
+    void Rotate()
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(OnMovementDirectionInput), desiredRotationSpeed);
+    }
+
+    void PlayerMovement()
+    {
+        InputX = Input.GetAxis("Horizontal");
+        InputY = Input.GetAxis("Vertical");
+
+        Vector3 movement = transform.forward * InputY + transform.right * InputX; 
+
+        controller.Move(movement * Time.deltaTime * 3);
     }
 }
