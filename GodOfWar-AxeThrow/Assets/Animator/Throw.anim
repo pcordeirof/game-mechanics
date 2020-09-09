@@ -54938,7 +54938,8 @@ AnimationClip:
   - time: 0.73333335
     functionName: WeaponThrow
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 102900000, guid: d1c3109bdb54ad54c8a2b2838528e640,
+      type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

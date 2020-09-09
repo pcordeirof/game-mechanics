@@ -60,7 +60,7 @@ public class Movement : MonoBehaviour
             //RotateToCamera(transform);
         }
     }*/
-    /*public void RotateToCamera(Transform t)
+    public void RotateToCamera(Transform t)
     {
 
         var camera = Camera.main;
@@ -70,7 +70,7 @@ public class Movement : MonoBehaviour
         desiredMoveDirection = forward;
 
         t.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
-    }*/
+    }
 
     /*void PlayerMove()
     {
