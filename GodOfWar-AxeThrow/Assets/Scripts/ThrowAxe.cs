@@ -30,6 +30,11 @@ public class ThrowAxe : MonoBehaviour
 
     public CinemachineFreeLook virtualCamera;
     public CinemachineImpulseSource impulseSource;
+
+    public ParticleSystem glowParticle;
+    public TrailRenderer trailRenderer;
+    
+    
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -103,9 +108,19 @@ public class ThrowAxe : MonoBehaviour
         aiming = state;
         anim.SetBool("Aiming", aiming);
         input.aiming = aiming;
+        
         float newAim = state ? cameraZoomOffset : 0;
         float originalAim = !state ? cameraZoomOffset : 0;
         DOVirtual.Float(originalAim, newAim, .5f, CameraOffset).SetDelay(delay);
+    
+        if(state)
+        {
+            glowParticle.Play();
+        }
+        else
+        {
+            glowParticle.Stop();
+        }
     }
 
     void WeaponThrow()
@@ -120,6 +135,9 @@ public class ThrowAxe : MonoBehaviour
         axe.eulerAngles = new Vector3(0, -90 + transform.eulerAngles.y, 0);
         axe.transform.position += transform.right/5;
         axeRb.AddForce(Camera.main.transform.forward * throwPower + transform.up * 2, ForceMode.Impulse);
+
+        trailRenderer.emitting = true;
+
     
     }
 
@@ -144,6 +162,8 @@ public class ThrowAxe : MonoBehaviour
         axe.localPosition = origLocPos;
         hasWeapon = true;
 
+        trailRenderer.emitting = false;
+        
         impulseSource.GenerateImpulse(Vector3.right);
 
     }
