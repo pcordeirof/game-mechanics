@@ -82,10 +82,11 @@ public class ThrowAxe : MonoBehaviour
 
         if(pulling)
         {
-            if(returnTime < 1)
+            if(returnTime < .75f)
             {
                 axe.position = GetQuadraticCurvePoint(returnTime, pullPosition, curvePoint.position, hand.position);
                 returnTime += Time.deltaTime * 1.5f;
+                Debug.Log(pullPosition);
             }
 
             else
@@ -104,7 +105,7 @@ public class ThrowAxe : MonoBehaviour
         input.aiming = aiming;
         float newAim = state ? cameraZoomOffset : 0;
         float originalAim = !state ? cameraZoomOffset : 0;
-        //DOVirtual.Float(originalAim, newAim, .5f, CameraOffset).SetDelay(delay);
+        DOVirtual.Float(originalAim, newAim, .5f, CameraOffset).SetDelay(delay);
     }
 
     void WeaponThrow()
@@ -119,6 +120,7 @@ public class ThrowAxe : MonoBehaviour
         axe.eulerAngles = new Vector3(0, -90 + transform.eulerAngles.y, 0);
         axe.transform.position += transform.right/5;
         axeRb.AddForce(Camera.main.transform.forward * throwPower + transform.up * 2, ForceMode.Impulse);
+    
     }
 
     void WeaponStartPull()

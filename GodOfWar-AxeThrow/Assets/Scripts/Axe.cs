@@ -11,9 +11,10 @@ public class Axe : MonoBehaviour
     {
         if (activated)
         {
-            transform.localEulerAngles += transform.forward * rotationSpeed;
+            transform.localEulerAngles += Vector3.forward * rotationSpeed;
         
         }
+
     }
 
     private void OnCollisionEnter(Collision other) 
