@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class ThrowAxe : MonoBehaviour
 {
+    public Image UI;
+    
     private Animator anim;
     private Movement input;
     private Axe axeScript;
@@ -43,6 +46,7 @@ public class ThrowAxe : MonoBehaviour
         axeScript = axe.GetComponent<Axe>();
         origLocPos = axe.localPosition;
         origLocRot = axe.localEulerAngles;
+        UI.DOFade(0,0);
     }
 
     // Update is called once per frame
@@ -91,7 +95,7 @@ public class ThrowAxe : MonoBehaviour
             {
                 axe.position = GetQuadraticCurvePoint(returnTime, pullPosition, curvePoint.position, hand.position);
                 returnTime += Time.deltaTime * 1.5f;
-                Debug.Log(pullPosition);
+                
             }
 
             else
@@ -108,6 +112,9 @@ public class ThrowAxe : MonoBehaviour
         aiming = state;
         anim.SetBool("Aiming", aiming);
         input.aiming = aiming;
+
+        float fade = state ? 1 : 0;
+        UI.DOFade(fade, .2f);
         
         float newAim = state ? cameraZoomOffset : 0;
         float originalAim = !state ? cameraZoomOffset : 0;

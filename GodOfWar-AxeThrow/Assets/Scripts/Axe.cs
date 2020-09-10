@@ -19,10 +19,24 @@ public class Axe : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) 
     {
-        Debug.Log(other.gameObject.name);
-        GetComponent<Rigidbody>().Sleep();
-        GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
-        GetComponent<Rigidbody>().isKinematic = true;
-        activated = false;
+        if(other.gameObject.layer == 8)
+        {
+            Debug.Log(other.gameObject.name);
+            GetComponent<Rigidbody>().Sleep();
+            GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            GetComponent<Rigidbody>().isKinematic = true;
+            activated = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) 
+    {
+        if (other.CompareTag("Breakable"))
+        {
+            if(other.GetComponent<BreakBox>() != null)
+            {
+                //other.GetComponent<BreakBox>().Break();
+            }
+        }
     }
 }
