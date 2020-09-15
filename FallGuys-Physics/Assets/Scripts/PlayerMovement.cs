@@ -13,6 +13,12 @@ public class PlayerMovement : MonoBehaviour
 
     private float turnSmoothVelocity;
 
+    bool grounded;
+    public Vector3 playerVelocity;
+    float gravityValue = -9.81f;  
+    float jumpheight = 3f;
+
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -21,9 +27,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        grounded = controller.isGrounded;
         GetMovementInput();
         GetMovementDirection();   
         Movement();
+        Jump();
+     
     }
 
     void GetMovementInput()
@@ -45,11 +54,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if(OnMovementInput.magnitude > 0)
         {
-            anim.SetBool("Walking", true);
+            if(grounded)
+            {
+                anim.SetBool("Walking", true);
+            }
+            else
+            {
+                anim.SetBool("Walking", false);
+            }
 
-            //Debug.Log("Angulo camera: " + Camera.main.transform.eulerAngles.y);
-            //Debug.Log("Angulo direção: " + Mathf.Atan2(OnMovementInput.x, OnMovementInput.y) * Mathf.Rad2Deg);
-            
             float targetAngle = Mathf.Atan2(OnMovementInput.x, OnMovementInput.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;// o angulo do input é local e o da camera é global, mas o do input é de -180 a 180 e o da camera 0 360 
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, 0.1f);//não entendi direito esse ref
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
@@ -65,4 +78,25 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void Jump()
+    {
+        if (grounded && playerVelocity.y < 0)
+        {
+            playerVelocity.y = 0;
+        }
+        if(controller.isGrounded && Input.GetButton("Submit"))
+        {
+            anim.SetBool("Jumping", true);
+            playerVelocity.y += Mathf.Sqrt(jumpheight * -3.0f * gravityValue);
+        }
+
+        if(!grounded && playerVelocity.y >=jumpheight)
+        {
+            anim.SetBool("Jumping", false);
+        }
+
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        controller.Move(playerVelocity * Time.deltaTime);
+   
+    }
 }
