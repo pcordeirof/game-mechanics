@@ -1,2 +1,2 @@
 # game-mechanics
-Example of mechanics of famous games.
+Example of mechanics from famous games.
