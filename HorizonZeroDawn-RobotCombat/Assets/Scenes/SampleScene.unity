@@ -924,7 +924,7 @@ Transform:
   m_GameObject: {fileID: 1687258581}
   m_LocalRotation: {x: 0.3809258, y: 0.088446036, z: -0.03663555, w: 0.91963613}
   m_LocalPosition: {x: 0, y: 3, z: -2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1352,6 +1352,23 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.97, z: 0}
+--- !u!114 &1911179489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911179484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc56a19f8ecdd7439ce332b077da30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwPower: 30
+  cameraZoomOffset: 0.3
+  walking: 1
+  aiming: 0
+  virtualCamera: {fileID: 1697690452}
 --- !u!1 &2138677391
 GameObject:
   m_ObjectHideFlags: 0
